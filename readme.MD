@@ -236,6 +236,9 @@ cpptraj -p system/complex.top \
 
 If you use this workflow, please cite:
 
+***DFDD framework:*
+> Hengphasatporn, K.; Duan, L.; Harada, R.; Shigeta, Y. *DFDD: A Cloud-Ready Tool for Distance-Guided Fully Dynamic Docking in Host–Guest Complexation.* J. Chem. Inf. Model. 2026, 66 (4), 1955–1963.
+
 **LB-PaCS-MD method:**
 > Harada R, Kitao A. *Biased Molecular Simulations for Open-Boundary Systems.* J. Chem. Theory Comput. 2015, 11, 5032–5042.
 
@@ -243,7 +246,7 @@ If you use this workflow, please cite:
 > Kuvek T, Jandová Z, Schleifer KJ, Oostenbrink C. *Binding Site Vectors Enable Mapping of Cytochrome P450 Functional Landscapes.* J. Chem. Inf. Model. 2026, 66, 1604–1616.
 
 **PaCS-Q:**
-> [https://github.com/nyelidl/PaCS-Q](https://github.com/nyelidl/PaCS-Q)
+> Duan, L.; Hengphasatporn, K.; Shigeta, Y. PaCS-Q: *Python Toolkits for Path Sampling in MD and QM/MM MD Simulation.* J. Chem. Inf. Model. 2025, 65 (13), 6441–6445.
 
 **AMBER force fields:**
 > He X et al. *ff19SB: Amino-Acid-Specific Protein Backbone Parameters Trained against Quantum Mechanics Energy Surfaces in Solution.* J. Chem. Theory Comput. 2020, 16, 528–552.
