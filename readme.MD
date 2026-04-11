@@ -236,7 +236,7 @@ cpptraj -p system/complex.top \
 
 If you use this workflow, please cite:
 
-***DFDD framework:*
+**DFDD framework:**
 > Hengphasatporn, K.; Duan, L.; Harada, R.; Shigeta, Y. *DFDD: A Cloud-Ready Tool for Distance-Guided Fully Dynamic Docking in Host–Guest Complexation.* J. Chem. Inf. Model. 2026, 66 (4), 1955–1963.
 
 **LB-PaCS-MD method:**
