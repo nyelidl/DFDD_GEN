@@ -1,6 +1,6 @@
 # DFDD Input Generator
 
-A program for preparing initial files for DFDD to perform **LB-PaCS-MD (Ligand-Binding PaCS-MD) via PaCS-Q** — a dynamic docking method that drives a ligand from outside the binding pocket toward its binding site using [PaCS-Q](https://github.com/nyelidl/PaCS-Q).
+A program for preparing initial files for **[DFDD](https://github.com/nyelidl/DFDD)** to perform **LB-PaCS-MD (Ligand-Binding PaCS-MD) via PaCS-Q** — a dynamic docking method that drives a ligand from outside the binding pocket toward its binding site using [PaCS-Q](https://github.com/nyelidl/PaCS-Q).
 
 ---
 
