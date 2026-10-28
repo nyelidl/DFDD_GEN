@@ -34,23 +34,7 @@ This generator is a **protein–ligand companion to DFDD**, the host–guest dyn
 
 ## 🧭 Workflow
 
-```mermaid
-flowchart TD
-    A[Protein input] --> B[Completeness and component inspection]
-    B --> C[Component review]
-    C --> D[PDB2PQR / PROPKA]
-    D --> E[Protein protonation and disulfide decisions]
-    E --> F[Ligand identity and pKaNET assessment]
-    F --> G[Confirm ligand microstate]
-    G --> H{Ligand parameter source}
-    H --> I[Generate GAFF2 / AM1-BCC]
-    H --> J[Validate supplied PREP + FRCMOD]
-    I --> K[BCSP / Manual / Auto + Adjust]
-    J --> K
-    K --> L[Solvation and ions]
-    L --> M[Restrained then unrestrained minimization]
-    M --> N[Independent reload and export]
-```
+[![DFDD Protein–Ligand Input Generator workflow](https://raw.githubusercontent.com/nyelidl/DFDD_GEN/main/DFDD_Gen.png)](https://github.com/nyelidl/DFDD_GEN/blob/main/DFDD_Gen.png)
 
 Unsupported chemistry, stale decisions, failed inspection, and failed convergence must be resolved before the affected preparation/export gates pass. A successful file conversion or OpenMM load alone is not scientific validation.
 
