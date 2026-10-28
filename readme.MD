@@ -1,266 +1,218 @@
-# DFDD Input Generator
+# DFDD — Protein–Ligand Input Generator
 
-A program for preparing initial files for **[DFDD](https://github.com/nyelidl/DFDD)** to perform **LB-PaCS-MD (Ligand-Binding PaCS-MD) via PaCS-Q** — a dynamic docking method that drives a ligand from outside the binding pocket toward its binding site using [PaCS-Q](https://github.com/nyelidl/PaCS-Q).
+### ☁️ Colab-oriented · 🧬 Chemically aware preparation · 📦 AMBER-ready inputs
+
+**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](./Protein_Ligand_DFDD_Input_Generator.ipynb)  
+**Development snapshot:** `v2.1-prep-frcmod-pbc-2026-10-28` · 28 October 2026  
+**Status:** Development / local validation; hosted Google Colab execution remains unverified.
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![DFDD paper](https://img.shields.io/badge/DFDD_paper-10.1021%2Facs.jcim.5c02852-blue)](https://doi.org/10.1021/acs.jcim.5c02852)
+
+Prepare protein–ligand systems with structure inspection, protein protonation review, pKaNET Cloud+ ligand assessment, exterior ligand placement, explicit solvation, energy minimization, and validated AMBER export.
+
+This generator is a **protein–ligand companion to DFDD**, the host–guest dynamic docking workflow described in *DFDD: A Cloud-Ready Tool for Distance-Guided Fully Dynamic Docking in Host–Guest Complexation*. The original paper's host–guest benchmarks do not establish validation of this protein–ligand extension.
+
+> **Preparation versus simulation:** Steps 1–9 prepare, minimize, validate, and export the system. The current notebook also contains **Step 10**, which starts heating, equilibration, and production MD. Stop after Step 9 when preparing inputs only. Avoid **Run all** if you do not intend to execute Step 10.
 
 ---
 
-## What this does
+## ✨ Features
 
+- Protein input from an RCSB PDB ID or uploaded PDB/mmCIF.
+- Sequence/completeness inspection, component inventory, and recorded preparation decisions.
+- PDB2PQR/PROPKA recommendations with protein chemistry and disulfide review.
+- Ligand input through SMILES, PubChem name/CID, or SDF/MOL/MOL2.
+- Mandatory pKaNET Cloud+ assessment in the Step 5 ligand workflow, followed by explicit microstate confirmation.
+- New organic ligand parameters using **GAFF2 / AM1-BCC**.
+- Reuse of matching **AMBER PREP/PREPI/PREPIN + FRCMOD** bundles without refitting charges.
+- **BCSP**, manual adjustment, and Auto + Adjust ligand placement.
+- Selectable supported force fields, water models, bulk ions, and periodic box shapes.
+- A py3Dmol periodic-box preview with an interactive **Show water** checkbox.
+- Restrained and unrestrained minimization, convergence checks, and independent AMBER reload.
+- Export packages, preparation reports, input hashes, and method citations.
+
+## 🧭 Workflow
+
+```mermaid
+flowchart TD
+    A[Protein input] --> B[Completeness and component inspection]
+    B --> C[Component review]
+    C --> D[PDB2PQR / PROPKA]
+    D --> E[Protein protonation and disulfide decisions]
+    E --> F[Ligand identity and pKaNET assessment]
+    F --> G[Confirm ligand microstate]
+    G --> H{Ligand parameter source}
+    H --> I[Generate GAFF2 / AM1-BCC]
+    H --> J[Validate supplied PREP + FRCMOD]
+    I --> K[BCSP / Manual / Auto + Adjust]
+    J --> K
+    K --> L[Solvation and ions]
+    L --> M[Restrained then unrestrained minimization]
+    M --> N[Independent reload and export]
 ```
-Co-crystal PDB or protein PDB
-        ↓
-Receptor preparation (PDB2PQR, protonation, binding site detection)
-        ↓
-Ligand preparation (SMILES / prep+frcmod / mol2 / lib)
-        ↓
-BSV-guided ligand placement (30+ Å outside binding pocket)
-        ↓
-Topology generation (AMBER ff19SB + GAFF2, octahedral box)
-        ↓
-Short minimization + heating
-        ↓
-Download ready-to-run PaCS-MD package (.zip)
-```
 
----
+Unsupported chemistry, stale decisions, failed inspection, and failed convergence must be resolved before the affected preparation/export gates pass. A successful file conversion or OpenMM load alone is not scientific validation.
 
-## Two versions
+## 🚀 Quick start in Google Colab
 
-| Version | File | Use case |
-|---|---|---|
-| Pure Colab | `LB_input.ipynb` | Run entirely in Google Colab |
-| Colab + Streamlit | `LB_input_streamlit.ipynb` | Nicer UI via Streamlit, shareable URL |
+1. Download the notebook from this repository.
+2. Open [Google Colab](https://colab.research.google.com/) and choose **File → Upload notebook**.
+3. Run **Setup A** and follow its runtime restart instructions.
+4. Run **Setup B** to install dependencies and load the embedded supporting modules.
+5. Run Steps **1–9 in order**, reading warnings and completing the review controls before continuing.
+6. Download and retain the exported ZIP, reports, logs, and citation files.
 
----
+For an explicitly reviewed preparation, choose **Review interactively** in Step 1. The alternative **Accept recommendations** mode records automatic recommendations; these records must not be described as human-confirmed decisions. Step 5 still requires its ligand microstate confirmation button.
 
-## Quick start
+An [existing shared Colab copy](https://colab.research.google.com/drive/1WWMoH8n43vn-MhQluJhtrr27gQQiak3f?usp=sharing) is available, but may predate the notebook in this repository. Upload the repository notebook to use this exact development snapshot.
 
-### Pure Colab
-1. Open `LB_input.ipynb` in Google Colab
-2. Runtime → Change runtime type → **GPU** (recommended)
-3. Run cells top to bottom
-4. Download `LB_PaCS_MD_inputs.zip` from Cell 15
-5. Extract and run `./run_pacs_md.sh`
+### Main example: BRD4–JQ1 (`3MXF`)
 
-### Colab + Streamlit
-1. Open `LB_input_streamlit.ipynb` in Google Colab
-2. Runtime → Change runtime type → **GPU**
-3. Run the launch cell
-4. Open the ngrok URL in your browser
-5. Follow the step-by-step UI
+The current notebook form defaults to PDB **3MXF**, chain **A**, a co-crystal site reference named **JQ1**, and an explicit isomeric JQ1 SMILES.
 
----
+Treat these as **starting settings**, not a verified hosted benchmark. Inspect the downloaded structure, actual component IDs, chain selection, deposited sequence, ligand stereochemistry, and source records. Correct any mismatch before proceeding. No completed hosted 3MXF execution or exported results have yet been supplied for review.
 
-## Requirements
+## 📓 Notebook steps
 
-All dependencies are installed automatically by the notebook. No local installation needed.
-
-### Software installed automatically
-- AmberTools (antechamber, tleap, parmchk2)
-- OpenBabel
-- RDKit
-- OpenFF Toolkit
-- PDB2PQR
-- OpenMM
-- PaCS-Q
-- NGLView / py3Dmol
-
-### For HPC runs
-- AMBER ≥ 22 (if using AMBER engine)
-- PaCS-Q (`pip install PaCS-Q`)
-- GROMACS (if using GROMACS conversion output)
-
----
-
-## Supported systems
-
-| System type | Supported |
+| Cell | What it does |
 |---|---|
-| Soluble proteins | ✅ |
-| Single chain | ✅ |
-| Multiple chains (dimer, heterodimer) | ✅ |
-| Disulfide bonds (intra + inter-chain) | ✅ |
-| AMBER modified residues (PTR, SEP, TPO, HYP...) | ✅ |
-| Known cofactors (NAD+, FAD, ATP, CoA...) | ✅ |
-| Simple metal ions (Zn²⁺, Mg²⁺, Ca²⁺) | ✅ (nonbonded) |
-| Small molecule ligands | ✅ |
-| DNA / RNA containing systems | ❌ |
-| Membrane proteins / lipid bilayers | ❌ |
-| Heme / Fe-S cluster proteins | ❌ |
-| Covalently bound metals | ❌ |
+| Setup A / B | Install the runtime and load embedded modules. |
+| **1 — Settings** | Set protein input, chains, binding site, protein pH, review mode, and placement offset. |
+| **2 — Load & inspect protein** | Inspect the original input and show its structure. |
+| **3 — Confirm components** | Review protein chains, waters, ligands, cofactors, and ions. |
+| **4 — Protein preparation** | Run PDB2PQR/PROPKA, review chemistry/disulfides, and prepare the protein. |
+| **5 — Ligand Preparation** | Assess identity and microstates; generate parameters or validate an uploaded bundle. |
+| **6 / optional 6b — Placement** | Apply BCSP or adjust actual ligand coordinates manually. |
+| **7 — Solvation & force-field settings** | Build the solvated topology and display the periodic cell and optional water. |
+| **8 — Minimize and validate** | Perform two-stage minimization, check convergence, reload, and visualize. |
+| **9 — Export** | Configure and download selected engine and PaCS-Q packages with reports/citations. |
+| **10 — Optional MD execution** | Starts heating, equilibration, and production; outside input-only preparation. |
 
----
+## 🧪 Step 5: ligand preparation
 
-## Ligand input modes
+### Generate new parameters
 
-| Mode | Input | Notes |
-|---|---|---|
-| SMILES | Type SMILES string | Auto-parameterized with GAFF2 + AM1-BCC |
-| prep + frcmod | Upload both files | From previous AMBER parameterization |
-| mol2 | Upload .mol2 file | Charges detected automatically |
-| lib | Upload .lib file | frcmod requested if non-standard atom types |
+Choose **SMILES**, **PubChem name**, **PubChem CID**, or **Upload SDF/MOL2/MOL file**. Supply a chemically defined ligand, including stereochemistry where relevant.
 
-All modes force resname → **MOL** for consistency with PaCS-Q.
+The workflow checks identity, assesses protonation/tautomer candidates with pKaNET Cloud+, and asks you to click **Confirm microstate & prepare ligand**. It then generates 3D coordinates and uses AmberTools for **GAFF2 atom typing, AM1-BCC charges, and FRCMOD completion**.
 
----
+- Ligand assessment pH defaults to **7.4** and is separate from confirmed protein pH.
+- Advanced controls expose the pH window, maximum tautomers, and top-ranked microstates.
+- Charge follows the confirmed molecular state; there is no arbitrary charge override.
+- pKaNET rankings use heuristic methods; they are not experimental pKa measurements.
+- AM1-BCC uses AmberTools' semiempirical calculation machinery. No separate external QM package is required by this route, but preparation time depends on ligand size and chemistry.
 
-## Binding Site Vectors (BSV)
+Uploading MOL2 in this mode does **not** preserve its original charges as a user-parameter bundle: new GAFF2/AM1-BCC parameters are generated.
 
-Ligand placement uses the BSV method from:
+### Reuse existing AMBER parameters
 
-> Kuvek et al., *J. Chem. Inf. Model.* **2026**, 66, 1604–1616  
-> DOI: [10.1021/acs.jcim.5c02705](https://doi.org/10.1021/acs.jcim.5c02705)
+1. Set **Ligand force-field source → Existing AMBER PREP + FRCMOD**.
+2. Enter the matching ligand SMILES, PubChem name, or CID for chemical assessment.
+3. Select the bundle's original **GAFF** or **GAFF2** base.
+4. Describe the parameter and charge provenance.
+5. Upload exactly one `.prep`, `.prepi`, or `.prepin` file and one `.frcmod` file together. Leave both path fields blank to open the Colab upload dialog.
+6. Review and confirm the ligand microstate.
 
-An icosphere is anchored at the binding site center. Vectors are traced to the nearest protein atom surface, determining the pocket exit direction. The ligand is placed along this exit vector at ≥ 30 Å — the minimum distance recommended for LB-PaCS-MD.
+The generator converts PREP coordinates into `ligand_from_prep.pdb` for viewing and produces a validated MOL2/FRCMOD pair for placement and assembly. **The PDB is not the force-field source.** Original types and charges are preserved, with isolated topology checks and a parameter/connectivity roundtrip audit.
 
----
+This route supports **one isolated organic GAFF/GAFF2-compatible ligand residue**. It blocks mismatched chemistry, unsupported atom types, CHARMM/GLYCAM templates, metal centers, and covalently attached ligands. PREP alone does not reliably establish chemical bond orders or electronic state, so matching identity remains necessary. A different pKaNET state requires compatible parameters rather than automatic alteration of the uploaded bundle.
 
-## Output files
+## 📍 BCSP and manual placement
 
-```
-LB_PaCS_MD_inputs.zip
-├── system/
-│   ├── complex.top          AMBER topology
-│   ├── complex.inpcrd       Initial coordinates
-│   └── last_frame.rst7      Minimized restart file
-├── components/
-│   ├── protein_prepared.pdb Protonated protein
-│   ├── ligand_placed.pdb    BSV-positioned ligand
-│   ├── guest.prep           GAFF2 prep file
-│   └── guest.frcmod         GAFF2 frcmod file
-├── config.json              OpenMM engine config
-│   OR md.mdin               AMBER engine config
-│   OR md.mdp                GROMACS MD parameters*
-├── run_pacs_md.sh           Ready-to-run script
-├── summary.txt              Full run parameters
-└── README.md                Instructions
-```
+**Bidirectional COM–Surface Placement (BCSP)** uses the selected binding-site center and protein center of mass to construct two rays. It finds exterior intersections of the solvent-inflated atomic envelope, compares valid outward directions, and checks clashes/accessibility.
 
-*GROMACS output is for manual MD workflow only — PaCS-Q does not support GROMACS engine.
+The current default offset is **25 Å beyond the selected exterior surface to the ligand COM**. It is not a 25 Å distance from the binding-pocket center.
 
----
+Use **optional Step 6b** for manual adjustment, then click **Confirm Placement**. Translation and rotation change ligand atomic coordinates, not just the camera. BCSP provides a starting geometry; it does not predict a validated binding tunnel, entry pathway, or induced fit.
 
-## Running PaCS-MD
+## 💧 Step 7: force fields, solvent, and periodic box
 
-### Local machine
-```bash
-unzip LB_PaCS_MD_inputs.zip
-cd LB_PaCS_MD_inputs
-chmod +x run_pacs_md.sh
-./run_pacs_md.sh
-```
+| Setting | Current options |
+|---|---|
+| Protein | ff19SB or ff14SB |
+| Newly parameterized ligand | GAFF2 / AM1-BCC |
+| Supplied ligand bundle | Validated original GAFF or GAFF2; supplied charges retained |
+| Enabled water models | OPC, TIP3P, TIP4P-Ew, SPC/E |
+| Bulk ions | Neutralize only; neutralize + NaCl/KCl; no ions for a neutral solute |
+| Box | Cubic (`iso` sizing), rectangular, truncated octahedron |
 
-### HPC — SLURM
-```bash
-# Transfer files
-scp -r LB_PaCS_MD_inputs/ user@cluster.hpc.ac.th:~/runs/
+Original TIP4P, TIP5P, and SPC appear in the form but currently stop with an unsupported-bundle diagnostic. They are not aliases for TIP4P-Ew or SPC/E. RNA/lipid selections are also blocked in this protein preparation route until a compatible workflow is validated.
 
-# Submit
-cd ~/runs/LB_PaCS_MD_inputs
-sbatch run_pacs_md.sh
-```
+Keep **show_solvated_preview** enabled to display the actual exported AMBER lattice. Orange edges outline the periodic cell. The output **Show water** checkbox changes visibility without deleting solvent or rerunning tleap. For truncated octahedra, the preview shows the triclinic periodic cell rather than its Wigner–Seitz polyhedron.
 
-### HPC — PBS
-```bash
-qsub run_pacs_md.sh
-```
+## 🧬 Protein chemistry and specialized systems
 
----
+Inspect all component decisions and structure-handling settings. Cofactors, bound ligands, waters, and ions require chemical interpretation; their presence in a crystal does not automatically establish biological relevance or parameter support.
 
-## PaCS-Q parameters
+The form includes terminal-trimming and uploaded-completeness settings. Review their consequences and retain their reports; neither setting proves experimental sequence completeness. Internal-gap repair, when permitted, produces approximate coordinates requiring inspection.
 
-| Parameter | Default | Range | Notes |
-|---|---|---|---|
-| Cycles (-cy) | 20 | 10–100 | More = more complete unbinding pathway |
-| Candidates (-cd) | 5 | 3–20 | More = better sampling, higher cost |
-| Sim time/cycle | 20 ps | 10–100 ps | Time per MD cycle |
-| Mode | -b | fixed | Binding only (ligand → pocket) |
-| Engine | OpenMM or AMBER | — | GROMACS = conversion only |
+A specialized CYP450 pathway includes an explicitly documented **ferric pentacoordinate high-spin IC6** model. This is not general support for every heme oxidation/spin state. The state requires evidence and compatible coordination; the pathway retains its ff19SB/OPC restriction. Unsupported metal/cofactor chemistry must be resolved through an appropriate documented model rather than deleted or parameterized as an ordinary organic ligand.
 
----
+## 📦 Outputs
 
-## Simulation settings (fixed defaults)
+Successful preparation can produce:
 
-| Setting | Value | Reason |
-|---|---|---|
-| Force field (protein) | ff19SB | Current AMBER standard |
-| Force field (ligand) | GAFF2 + AM1-BCC | Standard small molecule |
-| Water model | TIP3P | Consistent with ff19SB |
-| Box type | Octahedral | ~30% fewer waters vs rectangular |
-| Box padding | 15 Å | Accounts for 30+ Å ligand displacement |
-| Timestep | 2 fs | Safe with SHAKE |
-| SHAKE | H-bonds | Standard |
-| Cutoff | 10 Å | Standard AMBER |
-| Electrostatics | PME | Standard periodic |
-| Thermostat | Langevin (γ = 2.0) | Standard |
-| Barostat | Monte Carlo | Standard |
-| Pressure | 1 bar | Standard |
-| Neutralization | Na⁺/Cl⁻ (neutralize only) | No extra salt |
-| Restraints | None | Protein moves freely |
-| Placement distance | ≥ 30 Å | LB-PaCS-MD minimum |
+- `complex.prmtop` — AMBER topology.
+- `complex.rst7` — solvated starting coordinates and periodic cell.
+- `complex_min.rst7` / `complex_min.pdb` — minimized coordinates and structure.
+- `ligand.mol2` / `ligand.frcmod` — ligand parameters used for assembly.
+- `ligand_from_prep.pdb` / `.sdf` — converted supplied-template geometry, when that route is selected.
+- Identity, protonation, component, disulfide, placement, parameter, minimization, and reload reports.
+- `CITATIONS.md`, `CITATIONS.json`, force-field provenance, hashes, and execution logs.
+- Downloadable packages for selected **OpenMM, AMBER, GROMACS, and LB-PaCS-MD/PaCS-Q** targets, subject to their export checks.
 
----
+Generated MD protocols/packages do not establish that MD was executed or validated. The generator does not by itself establish binding affinity, free energy, an association mechanism, or a successful binding event. The original DFDD host–guest notebook's DBFE/MM-PBSA/MM-GBSA outputs are not claimed as outputs of this input generator.
 
-## After PaCS-MD
+For an exported PaCS-Q package, use its supplied instructions and run **`bash run.sh --check`** from that package directory for the non-production check. Do not assume the same flag applies to every engine package.
 
-Analysis is the user's responsibility. Suggested tools:
+## ✅ Verification status
 
-```bash
-# Trajectory imaging
-cpptraj -p system/complex.top \
-        -y MDrun/cycle_001/traj.nc \
-        -x traj_imaged.nc \
-        autoimage
+| Item | Evidence-backed status |
+|---|---|
+| Latest focused local regression checks | **PASS — 19 tests** |
+| Supplied benzene PREPI/FRCMOD conversion and isolated AMBER reload | **PASS** |
+| Supplied-ligand insertion, OPC solvation, neutralization, and independent reload | **PASS — isolated assembly smoke test** |
+| Charge/type retention and finite energy/forces in that fixture | **PASS** |
+| Water-toggle callback and cubic/triclinic edge calculations | **PASS locally; rendering mocked in the widget test** |
+| Full new PREP-based notebook minimization | **NOT_TESTED** |
+| Actual hosted Colab execution of this snapshot | **UNVERIFIED** |
+| Hosted 3MXF–JQ1 end-to-end workflow | **UNVERIFIED** |
 
-# Concatenate all cycles
-# Binding free energy: MBAR, WHAM, umbrella sampling
-# Visualization: VMD or PyMOL
-```
+The assembly smoke test uses a previous synthetic protein fixture with review, placement, and component gates mocked to isolate assembly. It is not a new end-to-end scientific approval. Earlier verified minimization results remain separate; they do not validate this new upload route or the hosted 3MXF example.
 
-**Reference:** Harada & Kitao, *J. Chem. Theory Comput.* **2015**, 11, 5032–5042
+See [`reports/UPDATE_REPORT.json`](./reports/UPDATE_REPORT.json), [`reports/REAL_PREP_SMOKE.json`](./reports/REAL_PREP_SMOKE.json), and [`reports/ASSEMBLY_SMOKE.json`](./reports/ASSEMBLY_SMOKE.json). This snapshot is **not a verified hosted release**.
 
----
+## 🛠️ Troubleshooting
 
-## Known limitations
+| Problem | Action |
+|---|---|
+| Download unavailable | Retain the network diagnostic or upload an authentic structure; do not bypass inspection. |
+| Protein preparation blocked | Inspect missing regions, selected components, chemistry decisions, and the reported unsupported model. |
+| PREP and ligand disagree | Check identity, stereochemistry, hydrogens, net charge, base force field, and template provenance. |
+| Missing or invalid parameters | Read the tleap/parameter logs and obtain a complete compatible parameter set. |
+| Placement clashes or insufficient clearance | Adjust placement or box padding and rerun affected stages. |
+| Minimization fails convergence | Inspect geometry, constraints, parameters, and optimizer diagnostics. Do not loosen acceptance solely to obtain PASS. |
+| Old behavior after uploading an update | Use a fresh runtime and rerun setup so embedded modules are reloaded. |
 
-- Soluble proteins only (no membrane, no DNA/RNA)
-- Binding mode only (ligand placed outside pocket)
-- No heme or metal cluster support
-- No HMR (hydrogen mass repartitioning)
-- No covalent ligands
-- GROMACS output requires manual PaCS-MD cycling
+## 📚 Citation and attribution
 
----
+For the original DFDD method, cite:
 
-## Citation
+**Hengphasatporn, K.; Duan, L.; Harada, R.; Shigeta, Y.**  
+*DFDD: A Cloud-Ready Tool for Distance-Guided Fully Dynamic Docking in Host–Guest Complexation.*  
+**Journal of Chemical Information and Modeling**, 2026.  
+[https://doi.org/10.1021/acs.jcim.5c02852](https://doi.org/10.1021/acs.jcim.5c02852)
 
-If you use this workflow, please cite:
+Retain the exported citation inventory and cite the methods actually used, including the selected protein/water model, ligand parameters and charge method, AmberTools, OpenMM, and relevant preparation tools. For uploaded parameters, retain their original references and licenses. Do not label user-supplied charges as AM1-BCC without evidence.
 
-**DFDD framework:**
-> Hengphasatporn K, Duan L, Harada R, Shigeta Y. *DFDD: A Cloud-Ready Tool for Distance-Guided Fully Dynamic Docking in Host–Guest Complexation.* J. Chem. Inf. Model. 2026, 66 (4), 1955–1963.
+Related resources:
 
-**LB-PaCS-MD method:**
-> Harada R, Kitao A. *Biased Molecular Simulations for Open-Boundary Systems.* J. Chem. Theory Comput. 2015, 11, 5032–5042.
-
-**Binding Site Vectors:**
-> Kuvek T, Jandová Z, Schleifer KJ, Oostenbrink C. *Binding Site Vectors Enable Mapping of Cytochrome P450 Functional Landscapes.* J. Chem. Inf. Model. 2026, 66, 1604–1616.
-
-**PaCS-Q:**
-> Duan L, Hengphasatporn K, Shigeta Y. *PaCS-Q: Python Toolkits for Path Sampling in MD and QM/MM MD Simulation.* J. Chem. Inf. Model. 2025, 65 (13), 6441–6445.
-
-**AMBER force fields:**
-> He X et al. *ff19SB: Amino-Acid-Specific Protein Backbone Parameters Trained against Quantum Mechanics Energy Surfaces in Solution.* J. Chem. Theory Comput. 2020, 16, 528–552.
-
-> Wang J et al. *Development and Testing of a General Amber Force Field.* J. Comput. Chem. 2004, 25, 1157–1174. (GAFF/GAFF2)
-
----
-
-## Contact
-
-For issues and questions, please open a GitHub issue.
-
----
+- [Original DFDD repository](https://github.com/nyelidl/DFDD)
+- [pKaNET Cloud+ source and explorer](https://nyelidl.github.io/pKaNET_Cloud/)
+- [Anyone Can Dock paper](https://doi.org/10.1186/s13321-026-01306-2)
+- [Docking workshop](https://nyelidl.github.io/Docking_workshop/)
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+A repository-wide license for this generator snapshot has not been established in this README. Add the owner's chosen `LICENSE` before public distribution and preserve all bundled third-party notices, including the upstream pKaNET MIT notice. A citation or an “Academic” badge is not a substitute for license terms.
