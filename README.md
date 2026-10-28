@@ -109,7 +109,7 @@ This route supports **one isolated organic GAFF/GAFF2-compatible ligand residue*
 
 The current default offset is **25 Å beyond the selected exterior surface to the ligand COM**. It is not a 25 Å distance from the binding-pocket center.
 
-Use **optional Step 6b** for manual adjustment, then click **Confirm Placement**. Translation and rotation change ligand atomic coordinates, not just the camera. BCSP provides a starting geometry; it does not predict a validated binding tunnel, entry pathway, or induced fit. BCSP is a geometric initialization procedure that places the ligand beyond the protein’s exterior envelope. It differs from the pocket-axis cylindrical confinement approach of Bertazzo et al. (2018).
+Use **optional Step 6b** for manual adjustment, then click **Confirm Placement**. Translation and rotation change ligand atomic coordinates, not just the camera. BCSP provides a starting geometry; it does not predict a validated binding tunnel, entry pathway, or induced fit. BCSP is a geometric initialization procedure that places the ligand beyond the protein’s exterior envelope. It differs from the pocket-axis cylindrical confinement approach of [`Bertazzo et al. (2018)`](https://doi.org/10.1021/acs.jcim.7b00674).
 
 ## 💧 Step 7: force fields, solvent, and periodic box
 
