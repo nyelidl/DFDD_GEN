@@ -2,11 +2,11 @@
 
 ### ☁️ Colab-oriented · 🧬 Chemically aware preparation · 📦 AMBER-ready inputs
 
-**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](./Protein_Ligand_DFDD_Input_Generator.ipynb)  
-**Development snapshot:** `v2.1-prep-frcmod-pbc-2026-10-28` · 28 October 2026  
+**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing)  
+**Development snapshot:** `v2.1-prep-frcmod-pbc-2026-10-28+final-review` · 28 October 2026  
 **Status:** Development / local validation; hosted Google Colab execution remains unverified.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing)
 [![DFDD paper](https://img.shields.io/badge/DFDD_paper-10.1021%2Facs.jcim.5c02852-blue)](https://doi.org/10.1021/acs.jcim.5c02852)
 
 Prepare protein–ligand systems with structure inspection, protein protonation review, pKaNET Cloud+ ligand assessment, exterior ligand placement, explicit solvation, energy minimization, and validated AMBER export.
@@ -32,7 +32,7 @@ This generator is a **protein–ligand companion to DFDD**, the host–guest dyn
 - Restrained and unrestrained minimization, convergence checks, and independent AMBER reload.
 - Export packages, preparation reports, input hashes, and method citations.
 
-## Workflow
+## 🧭 Workflow
 
 [![DFDD Protein–Ligand Input Generator workflow](https://raw.githubusercontent.com/nyelidl/DFDD_GEN/main/DFDD_Gen.png)](https://github.com/nyelidl/DFDD_GEN/blob/main/DFDD_Gen.png)
 
@@ -41,7 +41,7 @@ Unsupported chemistry, stale decisions, failed inspection, and failed convergenc
 ## 🚀 Quick start in Google Colab
 
 1. Download the notebook from this repository.
-2. Open [Google Colab](https://colab.research.google.com/) and choose **File → Upload notebook**.
+2. Open [Google Colab](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing) and choose **File → Save a copy in Drive**.
 3. Run **Setup A** and follow its runtime restart instructions.
 4. Run **Setup B** to install dependencies and load the embedded supporting modules.
 5. Run Steps **1–9 in order**, reading warnings and completing the review controls before continuing.
@@ -103,14 +103,13 @@ The generator converts PREP coordinates into `ligand_from_prep.pdb` for viewing 
 This route supports **one isolated organic GAFF/GAFF2-compatible ligand residue**. It blocks mismatched chemistry, unsupported atom types, CHARMM/GLYCAM templates, metal centers, and covalently attached ligands. PREP alone does not reliably establish chemical bond orders or electronic state, so matching identity remains necessary. A different pKaNET state requires compatible parameters rather than automatic alteration of the uploaded bundle.
 
 ## 📍 BCSP and manual placement
-
-[![BCSP concept](https://raw.githubusercontent.com/nyelidl/DFDD_GEN/main/BCSP.png)](https://github.com/nyelidl/DFDD_GEN/blob/main/BSCP.png)
+[![BCSP Concept](https://raw.githubusercontent.com/nyelidl/DFDD_GEN/main/BCSP.png)](https://github.com/nyelidl/DFDD_GEN/blob/main/BCSP.png)
 
 **Bidirectional COM–Surface Placement (BCSP)** uses the selected binding-site center and protein center of mass to construct two rays. It finds exterior intersections of the solvent-inflated atomic envelope, compares valid outward directions, and checks clashes/accessibility.
 
 The current default offset is **25 Å beyond the selected exterior surface to the ligand COM**. It is not a 25 Å distance from the binding-pocket center.
 
-Use **optional Step 6b** for manual adjustment, then click **Confirm Placement**. Translation and rotation change ligand atomic coordinates, not just the camera. BCSP provides a starting geometry; it does not predict a validated binding tunnel, entry pathway, or induced fit.
+Use **optional Step 6b** for manual adjustment, then click **Confirm Placement**. Translation and rotation change ligand atomic coordinates, not just the camera. BCSP provides a starting geometry; it does not predict a validated binding tunnel, entry pathway, or induced fit. BCSP is a geometric initialization procedure that places the ligand beyond the protein’s exterior envelope. It differs from the pocket-axis cylindrical confinement approach of Bertazzo et al. (2018).
 
 ## 💧 Step 7: force fields, solvent, and periodic box
 
@@ -156,7 +155,7 @@ For an exported PaCS-Q package, use its supplied instructions and run **`bash ru
 
 | Item | Evidence-backed status |
 |---|---|
-| Latest focused local regression checks | **PASS — 19 tests** |
+| Latest focused local regression checks | **PASS — 22 focused tests** |
 | Supplied benzene PREPI/FRCMOD conversion and isolated AMBER reload | **PASS** |
 | Supplied-ligand insertion, OPC solvation, neutralization, and independent reload | **PASS — isolated assembly smoke test** |
 | Charge/type retention and finite energy/forces in that fixture | **PASS** |
@@ -164,6 +163,8 @@ For an exported PaCS-Q package, use its supplied instructions and run **`bash ru
 | Full new PREP-based notebook minimization | **NOT_TESTED** |
 | Actual hosted Colab execution of this snapshot | **UNVERIFIED** |
 | Hosted 3MXF–JQ1 end-to-end workflow | **UNVERIFIED** |
+
+The latest final review also enforces roundtrip energy agreement at all tested geometries and blocks inconsistent uploaded charge sums without editing supplied charges. See [final notebook review](./reports/FINAL_NOTEBOOK_REVIEW.md).
 
 The assembly smoke test uses a previous synthetic protein fixture with review, placement, and component gates mocked to isolate assembly. It is not a new end-to-end scientific approval. Earlier verified minimization results remain separate; they do not validate this new upload route or the hosted 3MXF example.
 
