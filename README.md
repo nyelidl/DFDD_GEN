@@ -2,8 +2,7 @@
 
 ### ☁️ Colab-oriented · 🧬 Chemically aware preparation · 📦 AMBER-ready inputs
 
-**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing)  
-**Development snapshot:** `v2.1-prep-frcmod-pbc-2026-10-28+final-review` · 28 October 2026  
+**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing)   
 **Status:** Development / local validation; hosted Google Colab execution remains unverified.
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing)
