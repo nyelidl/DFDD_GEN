@@ -32,7 +32,7 @@ This generator is a **protein–ligand companion to DFDD**, the host–guest dyn
 - Restrained and unrestrained minimization, convergence checks, and independent AMBER reload.
 - Export packages, preparation reports, input hashes, and method citations.
 
-## 🧭 Workflow
+## Workflow
 
 [![DFDD Protein–Ligand Input Generator workflow](https://raw.githubusercontent.com/nyelidl/DFDD_GEN/main/DFDD_Gen.png)](https://github.com/nyelidl/DFDD_GEN/blob/main/DFDD_Gen.png)
 
@@ -103,6 +103,8 @@ The generator converts PREP coordinates into `ligand_from_prep.pdb` for viewing 
 This route supports **one isolated organic GAFF/GAFF2-compatible ligand residue**. It blocks mismatched chemistry, unsupported atom types, CHARMM/GLYCAM templates, metal centers, and covalently attached ligands. PREP alone does not reliably establish chemical bond orders or electronic state, so matching identity remains necessary. A different pKaNET state requires compatible parameters rather than automatic alteration of the uploaded bundle.
 
 ## 📍 BCSP and manual placement
+
+[![BCSP concept](https://raw.githubusercontent.com/nyelidl/DFDD_GEN/main/BCSP.png)](https://github.com/nyelidl/DFDD_GEN/blob/main/BSCP.png)
 
 **Bidirectional COM–Surface Placement (BCSP)** uses the selected binding-site center and protein center of mass to construct two rays. It finds exterior intersections of the solvent-inflated atomic envelope, compares valid outward directions, and checks clashes/accessibility.
 
