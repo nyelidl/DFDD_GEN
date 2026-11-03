@@ -202,3 +202,7 @@ Related resources:
 ## License
 
 A repository-wide license for this generator snapshot has not been established in this README. Add the owner's chosen `LICENSE` before public distribution and preserve all bundled third-party notices, including the upstream pKaNET MIT notice. A citation or an “Academic” badge is not a substitute for license terms.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/nyelidl/DFDD/main/DFDD-l.png" width="220">
+</div>
