@@ -2,10 +2,10 @@
 
 ### ☁️ Colab-oriented · 🧬 Chemically aware preparation · 📦 AMBER-ready inputs
 
-**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](https://colab.research.google.com/drive/1iVwz6uNJRJvS9U9OJxUkObzPt45F7y6E?usp=sharing)   
+**Notebook:** [`Protein_Ligand_DFDD_Input_Generator.ipynb`](https://colab.research.google.com/drive/1jF5KuvG6RAnQQ71-bqBQGdkAxgFJxuYY?usp=sharing)   
 **Status:** Development / local validation; hosted Google Colab execution remains unverified.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1iVwz6uNJRJvS9U9OJxUkObzPt45F7y6E?usp=sharing)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1jF5KuvG6RAnQQ71-bqBQGdkAxgFJxuYY?usp=sharing)
 [![DFDD paper](https://img.shields.io/badge/DFDD_paper-10.1021%2Facs.jcim.5c02852-blue)](https://doi.org/10.1021/acs.jcim.5c02852)
 
 Prepare protein–ligand systems with structure inspection, protein protonation review, pKaNET Cloud+ ligand assessment, exterior ligand placement, explicit solvation, energy minimization, and validated AMBER export.
@@ -40,7 +40,7 @@ Unsupported chemistry, stale decisions, failed inspection, and failed convergenc
 ## 🚀 Quick start in Google Colab
 
 1. Download the notebook from this repository.
-2. Open [Google Colab](https://colab.research.google.com/drive/1Rcf-UDw-a_xf3_KN9dvUlygl-iqkg-kx?usp=sharing) and choose **File → Save a copy in Drive**.
+2. Open [Google Colab](https://colab.research.google.com/drive/1jF5KuvG6RAnQQ71-bqBQGdkAxgFJxuYY?usp=sharing) and choose **File → Save a copy in Drive**.
 3. Run **Setup A** and follow its runtime restart instructions.
 4. Run **Setup B** to install dependencies and load the embedded supporting modules.
 5. Run Steps **1–9 in order**, reading warnings and completing the review controls before continuing.
@@ -48,7 +48,7 @@ Unsupported chemistry, stale decisions, failed inspection, and failed convergenc
 
 For an explicitly reviewed preparation, choose **Review interactively** in Step 1. The alternative **Accept recommendations** mode records automatic recommendations; these records must not be described as human-confirmed decisions. Step 5 still requires its ligand microstate confirmation button.
 
-An [existing shared Colab copy](https://colab.research.google.com/drive/1iVwz6uNJRJvS9U9OJxUkObzPt45F7y6E?usp=sharing) is available, but may predate the notebook in this repository. Upload the repository notebook to use this exact development snapshot.
+An [existing shared Colab copy](https://colab.research.google.com/drive/1jF5KuvG6RAnQQ71-bqBQGdkAxgFJxuYY?usp=sharing) is available, but may predate the notebook in this repository. Upload the repository notebook to use this exact development snapshot.
 
 ### Main example: BRD4–JQ1 (`3MXF`)
 
